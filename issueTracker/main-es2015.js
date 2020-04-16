@@ -386,8 +386,7 @@ __webpack_require__.r(__webpack_exports__);
 class IssueSocketService {
     constructor(http) {
         this.http = http;
-        // private url = 'http://api.techway.xyz';
-        this.url = 'http://localhost:3000';
+        this.url = 'http://api.techway.xyz';
         this.registerUser = (data) => {
             console.log("Registering user");
             this.socket.emit('register', data);

@@ -645,9 +645,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _classCallCheck(this, IssueSocketService);
 
-        this.http = http; // private url = 'http://api.techway.xyz';
-
-        this.url = 'http://localhost:3000';
+        this.http = http;
+        this.url = 'http://api.techway.xyz';
 
         this.registerUser = function (data) {
           console.log("Registering user");
