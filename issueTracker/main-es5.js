@@ -423,7 +423,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _classCallCheck(this, AppService);
 
         this.http = http;
-        this.url = 'http://localhost:3000';
+        this.url = 'http://api.techway.xyz';
 
         this.getUserInfoFromLocalstorage = function () {
           return JSON.parse(localStorage.getItem('userInfo'));

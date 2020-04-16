@@ -235,7 +235,7 @@ __webpack_require__.r(__webpack_exports__);
 class AppService {
     constructor(http) {
         this.http = http;
-        this.url = 'http://localhost:3000';
+        this.url = 'http://api.techway.xyz';
         this.getUserInfoFromLocalstorage = () => {
             return JSON.parse(localStorage.getItem('userInfo'));
         }; // end getUserInfoFromLocalstorage
