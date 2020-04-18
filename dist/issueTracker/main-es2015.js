@@ -233,6 +233,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class AppService {
+    // private url = 'http://localhost:3000';
     constructor(http) {
         this.http = http;
         this.url = 'http://api.techway.xyz';
@@ -543,21 +544,7 @@ class CreateComponent {
             this.loaded = false;
             for (var i = 0; i < this.selectedFiles.length; i++) {
                 let file = this.selectedFiles.item(i);
-                const params = {
-                    Bucket: 'attachments-issue',
-                    Key: this.Folder + file.name,
-                    Body: file,
-                    ACL: 'public-read'
-                };
-                this.getS3Bucket().upload(params, function (err, data) {
-                    if (err) {
-                        console.log("There was an error while uploading your file", err);
-                    }
-                    else {
-                        console.log("File uploaded successfully...", data);
-                    }
-                });
-                this.loaded = true;
+                this.toastr.success((i + 1) + " Files uploaded successfully");
             }
         };
         this.selectFile = (event) => {
@@ -585,25 +572,24 @@ class CreateComponent {
                 assigneeId: arr[1],
                 userId: this.userId
             };
-            let data = {
-                title: postIssueObject.title,
-                reporterName: postIssueObject.reporterName,
-                assigneeId: arr[1]
-            };
-            if (this.attachment)
-                this.appService.createIssue(postIssueObject).subscribe((apiResponse) => {
-                    console.log(apiResponse);
-                    this.toastr.success("Issue Created Successfully...");
-                    console.log("dat is" + data);
-                    this.socketService.issueAlert(data);
-                    setTimeout(() => {
-                        this.router.navigate([`dashboard/${this.userId}`]);
-                    }, 2000);
-                }, (err) => {
-                    if (err.status === 404) {
-                        this.toastr.warning("Issue Creation Failed.");
-                    }
-                });
+            this.appService.createIssue(postIssueObject).subscribe((apiResponse) => {
+                console.log(apiResponse);
+                this.toastr.success("Issue Created Successfully...");
+                let data = {
+                    title: apiResponse.data[0].title,
+                    reporterName: apiResponse.data[0].reporterName,
+                    assigneeId: arr[1],
+                    issueId: apiResponse.data[0].issueId
+                };
+                this.socketService.issueAlert(data);
+                setTimeout(() => {
+                    this.router.navigate([`dashboard/${this.userId}`]);
+                }, 2000);
+            }, (err) => {
+                if (err.status === 404) {
+                    this.toastr.warning("Issue Creation Failed.");
+                }
+            });
         };
         /*public loadMoreUsers:any=()=>{
            
@@ -640,7 +626,9 @@ class CreateComponent {
                     if (apiResponse.data.length < 10) {
                         this.loadMoreUsersButton = false;
                     }
-                    this.loadMoreUsersButton = true;
+                    else {
+                        this.loadMoreUsersButton = true;
+                    }
                     this.allUsers = apiResponse.data;
                     console.log(this.allUsers);
                 }
@@ -1329,7 +1317,7 @@ __webpack_require__.r(__webpack_exports__);
 function EditComponent_div_31_Template(rf, ctx) { if (rf & 1) {
     const _r80 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "span", 26);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 26);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "button", 27);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function EditComponent_div_31_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r80); const url_r78 = ctx.$implicit; const ctx_r79 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r79.deleteFile(url_r78); });
@@ -1423,10 +1411,12 @@ class EditComponent {
                 reporterId: this.reporterId,
                 editorId: ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('receiverId')
             };
+            console.log(data);
             this.appService.editIssue(data).subscribe((apiResponse) => {
                 if (apiResponse.status == 200) {
                     this.toastr.success("Issue edited successfully...");
                     this.socket.editAlert(data);
+                    this.router.navigate([`/issueview/${this.issueId}`]);
                 }
                 else {
                     this.toastr.warning("Failed to edit issue.");
@@ -1447,7 +1437,9 @@ class EditComponent {
                 if (apiResponse.data.length < 10) {
                     this.userButton = false;
                 }
-                this.userButton = true;
+                else {
+                    this.userButton = true;
+                }
                 this.allUsers = apiResponse.data;
                 console.log(this.allUsers);
             });
@@ -1461,6 +1453,10 @@ class EditComponent {
                 if (apiResponse.status = 200) {
                     if (apiResponse.data.length < 10) {
                         this.userButton = false;
+                        this.previousButton = true;
+                    }
+                    else {
+                        this.userButton = true;
                         this.previousButton = true;
                     }
                     this.allUsers = apiResponse.data;
@@ -1483,9 +1479,10 @@ class EditComponent {
         this.uploadFile = () => {
             for (var i = 0; i < this.selectedFiles.length; i++) {
                 let file = this.selectedFiles.item(i);
-                this.upload.uploadfile(file);
+                let bool = this.upload.uploadfile(file);
                 let fn = this.Folder + file.name;
                 this.attachments.push(fn);
+                console.log(bool);
             }
             console.log("After upload" + this.attachments);
         };

@@ -417,6 +417,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__);
 
     var AppService = /*#__PURE__*/function () {
+      // private url = 'http://localhost:3000';
       function AppService(http) {
         var _this = this;
 
@@ -968,22 +969,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           for (var i = 0; i < _this3.selectedFiles.length; i++) {
             var file = _this3.selectedFiles.item(i);
 
-            var params = {
-              Bucket: 'attachments-issue',
-              Key: _this3.Folder + file.name,
-              Body: file,
-              ACL: 'public-read'
-            };
-
-            _this3.getS3Bucket().upload(params, function (err, data) {
-              if (err) {
-                console.log("There was an error while uploading your file", err);
-              } else {
-                console.log("File uploaded successfully...", data);
-              }
-            });
-
-            _this3.loaded = true;
+            _this3.toastr.success(i + 1 + " Files uploaded successfully");
           }
         };
 
@@ -1017,17 +1003,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             assigneeId: arr[1],
             userId: _this3.userId
           };
-          var data = {
-            title: postIssueObject.title,
-            reporterName: postIssueObject.reporterName,
-            assigneeId: arr[1]
-          };
-          if (_this3.attachment) _this3.appService.createIssue(postIssueObject).subscribe(function (apiResponse) {
+
+          _this3.appService.createIssue(postIssueObject).subscribe(function (apiResponse) {
             console.log(apiResponse);
 
             _this3.toastr.success("Issue Created Successfully...");
 
-            console.log("dat is" + data);
+            var data = {
+              title: apiResponse.data[0].title,
+              reporterName: apiResponse.data[0].reporterName,
+              assigneeId: arr[1],
+              issueId: apiResponse.data[0].issueId
+            };
 
             _this3.socketService.issueAlert(data);
 
@@ -1081,9 +1068,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             if (apiResponse.status == 200) {
               if (apiResponse.data.length < 10) {
                 _this3.loadMoreUsersButton = false;
+              } else {
+                _this3.loadMoreUsersButton = true;
               }
 
-              _this3.loadMoreUsersButton = true;
               _this3.allUsers = apiResponse.data;
               console.log(_this3.allUsers);
             }
@@ -2457,7 +2445,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "span", 26);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 26);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2);
 
@@ -2626,12 +2614,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             reporterId: _this6.reporterId,
             editorId: ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('receiverId')
           };
+          console.log(data);
 
           _this6.appService.editIssue(data).subscribe(function (apiResponse) {
             if (apiResponse.status == 200) {
               _this6.toastr.success("Issue edited successfully...");
 
               _this6.socket.editAlert(data);
+
+              _this6.router.navigate(["/issueview/".concat(_this6.issueId)]);
             } else {
               _this6.toastr.warning("Failed to edit issue.");
             }
@@ -2654,9 +2645,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           _this6.appService.allUsers(data).subscribe(function (apiResponse) {
             if (apiResponse.data.length < 10) {
               _this6.userButton = false;
+            } else {
+              _this6.userButton = true;
             }
 
-            _this6.userButton = true;
             _this6.allUsers = apiResponse.data;
             console.log(_this6.allUsers);
           });
@@ -2672,6 +2664,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             if (apiResponse.status = 200) {
               if (apiResponse.data.length < 10) {
                 _this6.userButton = false;
+                _this6.previousButton = true;
+              } else {
+                _this6.userButton = true;
                 _this6.previousButton = true;
               }
 
@@ -2701,11 +2696,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           for (var i = 0; i < _this6.selectedFiles.length; i++) {
             var file = _this6.selectedFiles.item(i);
 
-            _this6.upload.uploadfile(file);
+            var bool = _this6.upload.uploadfile(file);
 
             var fn = _this6.Folder + file.name;
 
             _this6.attachments.push(fn);
+
+            console.log(bool);
           }
 
           console.log("After upload" + _this6.attachments);
