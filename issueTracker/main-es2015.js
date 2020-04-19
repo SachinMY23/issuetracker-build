@@ -233,7 +233,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class AppService {
-    // private url = 'http://localhost:3000';
+    //private url = 'http://localhost:3000';
     constructor(http) {
         this.http = http;
         this.url = 'http://api.techway.xyz';
@@ -298,7 +298,7 @@ class AppService {
         let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]()
             .set('title', data.title)
             .set('description', data.description)
-            .set('assignId', data.assigneeId)
+            .set('assigneeId', data.assigneeId)
             .set('attachments', data.attachments)
             .set('authToken', ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('authtoken'));
         return this.http.post(`${this.url}/api/v1/issues/edit/${data.issueId}`, params);
@@ -1386,7 +1386,8 @@ class EditComponent {
                 editorName: ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('receiverName'),
                 watchers: this.watchers,
                 reporterId: this.reporterId,
-                editorId: ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('receiverId')
+                editorId: ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('receiverId'),
+                receiverId: this.user
             };
             console.log(data);
             this.appService.editIssue(data).subscribe((apiResponse) => {

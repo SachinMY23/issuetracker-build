@@ -417,7 +417,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__);
 
     var AppService = /*#__PURE__*/function () {
-      // private url = 'http://localhost:3000';
+      //private url = 'http://localhost:3000';
       function AppService(http) {
         var _this = this;
 
@@ -491,7 +491,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "editIssue",
         value: function editIssue(data) {
-          var params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]().set('title', data.title).set('description', data.description).set('assignId', data.assigneeId).set('attachments', data.attachments).set('authToken', ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('authtoken'));
+          var params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]().set('title', data.title).set('description', data.description).set('assigneeId', data.assigneeId).set('attachments', data.attachments).set('authToken', ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('authtoken'));
           return this.http.post("".concat(this.url, "/api/v1/issues/edit/").concat(data.issueId), params);
         }
       }, {
@@ -2582,7 +2582,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             editorName: ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('receiverName'),
             watchers: _this6.watchers,
             reporterId: _this6.reporterId,
-            editorId: ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('receiverId')
+            editorId: ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('receiverId'),
+            receiverId: _this6.user
           };
           console.log(data);
 
