@@ -329,7 +329,7 @@ class AppService {
         return this.http.get(`${this.url}/api/v1/issues/single/${issueId}?&authToken=${ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('authtoken')}`);
     }
     getSerachResults(data) {
-        return this.http.get(`${this.url}/api/v1/issues/searched?searchString=${data.searchString}?skip=${data.skip}&authToken=${ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('authtoken')}`);
+        return this.http.get(`${this.url}/api/v1/issues/searched?searchString=${data.searchString}&skip=${data.skip}&authToken=${ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('authtoken')}`);
     }
     markCompleted(data) {
         let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpParams"]().

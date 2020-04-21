@@ -529,7 +529,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getSerachResults",
         value: function getSerachResults(data) {
-          return this.http.get("".concat(this.url, "/api/v1/issues/searched?searchString=").concat(data.searchString, "?skip=").concat(data.skip, "&authToken=").concat(ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('authtoken')));
+          return this.http.get("".concat(this.url, "/api/v1/issues/searched?searchString=").concat(data.searchString, "&skip=").concat(data.skip, "&authToken=").concat(ng2_cookies_ng2_cookies__WEBPACK_IMPORTED_MODULE_2__["Cookie"].get('authtoken')));
         }
       }, {
         key: "markCompleted",
